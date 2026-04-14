@@ -43,8 +43,8 @@ from acvl_utils.cropping_and_padding.bounding_boxes import bounding_box_to_slice
 
 
 # ─── Registry of baseline models ────────────────────────────────────────────────
-BASELINE_ROOT = "/mnt/pool/datasets/CY/AutoMSC_challenge/baseline_models"
-RAW_ROOT = "/mnt/pool/datasets/CY/AutoMSC_raw"
+BASELINE_ROOT = "./baseline_models"
+RAW_ROOT = "."
 
 MODEL_REGISTRY = {
     "Dataset002_BMLMPS_FLAIR": {

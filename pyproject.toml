@@ -3,7 +3,7 @@ name = "nnunetv2"
 version = "2.6.2"
 requires-python = ">=3.10"
 description = "nnU-Net is a framework for out-of-the box image segmentation."
-readme = "readme.md"
+readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
     { name = "Fabian Isensee", email = "f.isensee@dkfz-heidelberg.de"},
@@ -88,6 +88,9 @@ dev = [
     "ruff",
     "pre-commit"
 ]
+
+[tool.setuptools.packages.find]
+include = ["nnunetv2*"]
 
 [build-system]
 requires = ["setuptools>=67.8.0"]
