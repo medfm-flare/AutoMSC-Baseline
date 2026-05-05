@@ -30,6 +30,16 @@ nnUNet_results = "/path/to/your/nnUNet_results"
 ```
 ## Usage
 
+### 0. Download Dataset
+
+Download the FLARE-AutoMSC dataset from HuggingFace:
+
+**Dataset:** [https://huggingface.co/datasets/FLARE-MedFM/FLARE-AutoMSC](https://huggingface.co/datasets/FLARE-MedFM/FLARE-AutoMSC)
+
+After downloading, place each sub-dataset folder under `nnUNet_raw/` following the folder convention described in the next step.
+
+---
+
 ### 1. Prepare Data
 
 ## Preprocessing with nnUNet
