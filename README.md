@@ -469,14 +469,6 @@ claude
 | `nnUNetResEncUNetLPlans` | Residual encoder, large |
 | `nnUNetResEncUNetXLPlans` | Residual encoder, extra-large |
 
-### Test Datasets
-
-| Dataset | Path | Type | Classes |
-|---------|------|------|---------|
-| Dataset003_T1c_crop | `nnUNet_raw/Dataset003_T1c_crop` | Raw (for preprocessing test) | -- |
-| Dataset004_T1c_crop_2class | `nnUNet_preprocessed/Dataset004_T1c_crop_2class` | Binary classification | 0, 1 |
-| Dataset005_T1c_crop_3class | `nnUNet_preprocessed/Dataset005_T1c_crop_3class` | Multi-class classification | 0, 1, 2 |
-
 ## License
 
 This project is licensed under the [Apache License 2.0](https://github.com/ChingYuanYu/nnunetcls/blob/main/LICENSE).
