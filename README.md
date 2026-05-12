@@ -196,81 +196,91 @@ The **`results.csv`** file contains the model’s classification outputs:
 
 ```python
 from baseline_infer import (
-    infer_dataset002_bmlmps_flair,
-    infer_dataset003_bmlmps_t1ce,
-    infer_dataset004_brainmets,
-    infer_dataset005_mu_glioma_post,
-    infer_dataset006_jsc_ucsd_ptgb,
-    infer_dataset007_picai,
+    infer_dataset001_brainmets,
+    infer_dataset002_mu_glioma,
+    infer_dataset003_ucsd_ptgb,
+    infer_dataset004_picai,
+    infer_dataset005_luna25,
+    infer_dataset061_petwb_lung,
+    infer_dataset062_petwb_liver,
 )
 
-# Dataset002_BMLMPS_FLAIR — FLAIR
-seg_path, video_path, cls_results = infer_dataset002_bmlmps_flair(
-    image=["flair.nii.gz"],
-    output_dir="./out/dataset002",
-    device="cuda",
-    fold=0,
-)
-# cls_results -> {"egfr_status": {"Wild-Type": 0.71, "Mutation": 0.29}}
-
-# Dataset003_BMLMPS_T1CE — T1CE
-seg_path, video_path, cls_results = infer_dataset003_bmlmps_t1ce(
-    image=["t1ce.nii.gz"],
-    output_dir="./out/dataset003",
-    device="cuda",
-    fold=0,
-)
-# cls_results -> {"egfr_status": {"Wild-Type": 0.64, "Mutation": 0.36}}
-
-# Dataset004_BrainMets — T1, T1c, T2, FLAIR, CT, RTP
-seg_path, video_path, cls_results = infer_dataset004_brainmets(
+# Dataset001_BrainMets — T1, T1c, T2, FLAIR, CT, RTP
+seg_path, video_path, cls_results = infer_dataset001_brainmets(
     image=["t1.nii.gz", "t1c.nii.gz", "t2.nii.gz", "flair.nii.gz", "ct.nii.gz", "rtp.nii.gz"],
-    output_dir="./out/dataset004",
+    output_dir="./out/dataset001",
     device="cuda",
     fold=0,
 )
 # cls_results -> {"primary_tumor_origin": {"NSCLC": 0.58, "Breast carcinoma": 0.22, "Unknown": 0.20}}
 
-# Dataset005_MU_Glioma_Post — t1c, t1n, t2f, t2w
-seg_path, video_path, cls_results = infer_dataset005_mu_glioma_post(
+# Dataset002_MU_Glioma — t1c, t1n, t2f, t2w
+seg_path, video_path, cls_results = infer_dataset002_mu_glioma(
     image=["t1c.nii.gz", "t1n.nii.gz", "t2f.nii.gz", "t2w.nii.gz"],
-    output_dir="./out/dataset005",
+    output_dir="./out/dataset002",
     device="cuda",
     fold=0,
 )
 # cls_results -> {"primary_diagnosis": {"GBM": 0.67, "Astrocytoma": 0.21, "Others": 0.12}}
 
-# Dataset006_AutoMSC_UCSD_PTGB — T1post, FLAIR, ADC
-seg_path, video_path, cls_results = infer_dataset006_jsc_ucsd_ptgb(
+# Dataset003_UCSD_PTGB — T1post, FLAIR, ADC
+seg_path, video_path, cls_results = infer_dataset003_ucsd_ptgb(
     image=["t1post.nii.gz", "flair.nii.gz", "adc.nii.gz"],
-    output_dir="./out/dataset006",
+    output_dir="./out/dataset003",
     device="cuda",
     fold=0,
 )
 # cls_results -> {"idh_mutation_status": {"IDH Wild-Type": 0.55, "IDH Mutant": 0.30, "Unknown": 0.15}}
 
-# Dataset007_PICAI — T2W, ADC, HBV
-seg_path, video_path, cls_results = infer_dataset007_picai(
+# Dataset004_PICAI — T2W, ADC, HBV
+seg_path, video_path, cls_results = infer_dataset004_picai(
     image=["t2w.nii.gz", "adc.nii.gz", "hbv.nii.gz"],
-    output_dir="./out/dataset007",
+    output_dir="./out/dataset004",
     device="cuda",
     fold=0,
 )
 # cls_results -> {"ISUP_grade": {"Benign/Indolent": 0.63, "ISUP 1": 0.26, ...}}
+
+# Dataset005_LUNA25 — CT
+seg_path, video_path, cls_results = infer_dataset005_luna25(
+    image=["ct.nii.gz"],
+    output_dir="./out/dataset005",
+    device="cuda",
+    fold=0,
+)
+# cls_results -> {"malignancy": {"Benign": 0.72, "Malignant": 0.28}}
+
+# Dataset061_PETWB_Lung — CT, PET
+seg_path, video_path, cls_results = infer_dataset061_petwb_lung(
+    image=["ct.nii.gz", "pet.nii.gz"],
+    output_dir="./out/dataset061",
+    device="cuda",
+    fold=0,
+)
+# cls_results -> {"cancer_type": {"Other": 0.15, "Lung Cancer": 0.85}}
+
+# Dataset062_PETWB_Liver — CT, PET
+seg_path, video_path, cls_results = infer_dataset062_petwb_liver(
+    image=["ct.nii.gz", "pet.nii.gz"],
+    output_dir="./out/dataset062",
+    device="cuda",
+    fold=0,
+)
+# cls_results -> {"cancer_type": {"Other": 0.30, "Liver Cancer": 0.70}}
 ```
 
 **Supported datasets**
 
 | Function | Dataset | Modalities (channel order) | Classification task |
 |---|---|---|---|
-| `infer_dataset002_bmlmps_flair` | Dataset002_BMLMPS_FLAIR | FLAIR | `egfr_status`: Wild-Type / Mutation |
-| `infer_dataset003_bmlmps_t1ce` | Dataset003_BMLMPS_T1CE | T1CE | `egfr_status`: Wild-Type / Mutation |
-| `infer_dataset004_brainmets` | Dataset004_BrainMets | T1, T1c, T2, FLAIR, CT, RTP | `primary_tumor_origin`: NSCLC / Breast carcinoma / Unknown |
-| `infer_dataset005_mu_glioma_post` | Dataset005_MU_Glioma_Post | t1c, t1n, t2f, t2w | `primary_diagnosis`: GBM / Astrocytoma / Others |
-| `infer_dataset006_jsc_ucsd_ptgb` | Dataset006_AutoMSC_UCSD_PTGB | T1post, FLAIR, ADC | `idh_mutation_status`: IDH Wild-Type / IDH Mutant / Unknown |
-| `infer_dataset007_picai` | Dataset007_PICAI | T2W, ADC, HBV | `ISUP_grade` (6-class) |
+| `infer_dataset001_brainmets` | Dataset001_BrainMets | T1, T1c, T2, FLAIR, CT, RTP | `primary_tumor_origin`: NSCLC / Breast carcinoma / Unknown |
+| `infer_dataset002_mu_glioma` | Dataset002_MU_Glioma | t1c, t1n, t2f, t2w | `primary_diagnosis`: GBM / Astrocytoma / Others |
+| `infer_dataset003_ucsd_ptgb` | Dataset003_UCSD_PTGB | T1post, FLAIR, ADC | `idh_mutation_status`: IDH Wild-Type / IDH Mutant / Unknown |
+| `infer_dataset004_picai` | Dataset004_PICAI | T2W, ADC, HBV | `ISUP_grade` (6-class) |
+| `infer_dataset005_luna25` | Dataset005_LUNA25 | CT | `malignancy`: Benign / Malignant |
+| `infer_dataset061_petwb_lung` | Dataset061_PETWB_Lung | CT, PET | `cancer_type`: Other / Lung Cancer |
+| `infer_dataset062_petwb_liver` | Dataset062_PETWB_Liver | CT, PET | `cancer_type`: Other / Liver Cancer |
 
-Dataset004 and Dataset006 were trained with an extra **Unknown** bucket for `-1`/masked training labels, so their classifier heads emit 3 probabilities even though `dataset.json` only names 2 classes — the wrapper maps the extra index to `"Unknown"` automatically.
 
 **Model paths**
 

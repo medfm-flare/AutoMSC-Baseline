@@ -47,29 +47,33 @@ BASELINE_ROOT = "./baseline_models"
 RAW_ROOT = "."
 
 MODEL_REGISTRY = {
-    "Dataset002_BMLMPS_FLAIR": {
+    "Dataset001_BrainMets": {
         "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
-        "dataset_json_fallback": f"{RAW_ROOT}/Dataset002_BMLMPS_FLAIR/dataset.json",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset001_BrainMets/dataset.json",
     },
-    "Dataset003_BMLMPS_T1CE": {
+    "Dataset002_MU_Glioma": {
         "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
-        "dataset_json_fallback": f"{RAW_ROOT}/Dataset003_BMLMPS_T1CE/dataset.json",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset002_MU_Glioma/dataset.json",
     },
-    "Dataset004_BrainMets": {
-        "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
-        "dataset_json_fallback": f"{RAW_ROOT}/Dataset004_BrainMets/dataset.json",
-    },
-    "Dataset005_MU_Glioma_Post": {
-        "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
-        "dataset_json_fallback": f"{RAW_ROOT}/Dataset005_MU_Glioma_Post/dataset.json",
-    },
-    "Dataset006_AutoMSC_UCSD_PTGB": {
+    "Dataset003_UCSD_PTGB": {
         "plans_folder": "nnUNetCLSTrainerMTL__nnUNetResEncUNetMPlans__3d_fullres",
-        "dataset_json_fallback": f"{RAW_ROOT}/Dataset006_AutoMSC_UCSD_PTGB/dataset.json",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset003_UCSD_PTGB/dataset.json",
     },
-    "Dataset007_PICAI": {
+    "Dataset004_PICAI": {
         "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
-        "dataset_json_fallback": f"{RAW_ROOT}/Dataset007_PICAI/dataset.json",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset004_PICAI/dataset.json",
+    },
+    "Dataset005_LUNA25": {
+        "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset005_LUNA25/dataset.json",
+    },
+    "Dataset061_PETWB_Lung": {
+        "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset061_PETWB_Lung/dataset.json",
+    },
+    "Dataset062_PETWB_Liver": {
+        "plans_folder": "nnUNetCLSTrainerMTL__nnUNetPlans__3d_fullres",
+        "dataset_json_fallback": f"{RAW_ROOT}/Dataset062_PETWB_Liver/dataset.json",
     },
 }
 
@@ -293,11 +297,9 @@ def _format_cls_results(cls_probs: torch.Tensor, dataset_json: dict) -> dict:
         p_pos = float(probs[0])
         return {task_name: {name_map["0"]: 1.0 - p_pos, name_map["1"]: p_pos}}
 
-    # Multi-class. Model may output more classes than dataset.json names
-    # (e.g. Dataset004/006 trained with an extra "Unknown" bucket for -1 labels).
     out = {}
     for i, p in enumerate(probs):
-        name = name_map.get(str(i), "Unknown" if i == len(name_map) else f"class_{i}")
+        name = name_map.get(str(i), f"class_{i}")
         out[name] = float(p)
     return {task_name: out}
 
@@ -528,61 +530,70 @@ def _run_inference(dataset_name: str,
 
 
 # ─── Per-model public functions ─────────────────────────────────────────────────
-def infer_dataset002_bmlmps_flair(image: Union[str, Sequence[str]],
-                                  output_dir: str,
-                                  device: Union[str, torch.device] = 'cuda',
-                                  fold: int = 0) -> Tuple[str, str, dict]:
-    """BMLMPS FLAIR — whole-tumor seg + EGFR status (Wild-Type / Mutation)."""
-    return _run_inference("Dataset002_BMLMPS_FLAIR", image, output_dir, device, fold)
-
-
-def infer_dataset003_bmlmps_t1ce(image: Union[str, Sequence[str]],
-                                 output_dir: str,
-                                 device: Union[str, torch.device] = 'cuda',
-                                 fold: int = 0) -> Tuple[str, str, dict]:
-    """BMLMPS T1CE — core-tumor seg + EGFR status (Wild-Type / Mutation)."""
-    return _run_inference("Dataset003_BMLMPS_T1CE", image, output_dir, device, fold)
-
-
-def infer_dataset004_brainmets(image: Union[str, Sequence[str]],
+def infer_dataset001_brainmets(image: Union[str, Sequence[str]],
                                output_dir: str,
                                device: Union[str, torch.device] = 'cuda',
                                fold: int = 0) -> Tuple[str, str, dict]:
-    """PROTEAS BrainMets — necrotic/enhancing/edema seg + primary tumor origin (NSCLC / Breast)."""
-    return _run_inference("Dataset004_BrainMets", image, output_dir, device, fold)
+    """BrainMets — necrotic/enhancing/edema seg + primary tumor origin (NSCLC / Breast)."""
+    return _run_inference("Dataset001_BrainMets", image, output_dir, device, fold)
 
 
-def infer_dataset005_mu_glioma_post(image: Union[str, Sequence[str]],
-                                    output_dir: str,
-                                    device: Union[str, torch.device] = 'cuda',
-                                    fold: int = 0) -> Tuple[str, str, dict]:
-    """MU-Glioma-Post — NCR/ED/ET/NET_RC seg + primary diagnosis (GBM / Astrocytoma / Others)."""
-    return _run_inference("Dataset005_MU_Glioma_Post", image, output_dir, device, fold)
+def infer_dataset002_mu_glioma(image: Union[str, Sequence[str]],
+                               output_dir: str,
+                               device: Union[str, torch.device] = 'cuda',
+                               fold: int = 0) -> Tuple[str, str, dict]:
+    """MU-Glioma — NCR/ED/ET/NET_RC seg + primary diagnosis (GBM / Astrocytoma / Others)."""
+    return _run_inference("Dataset002_MU_Glioma", image, output_dir, device, fold)
 
 
-def infer_dataset006_jsc_ucsd_ptgb(image: Union[str, Sequence[str]],
-                                   output_dir: str,
-                                   device: Union[str, torch.device] = 'cuda',
-                                   fold: int = 0) -> Tuple[str, str, dict]:
+def infer_dataset003_ucsd_ptgb(image: Union[str, Sequence[str]],
+                               output_dir: str,
+                               device: Union[str, torch.device] = 'cuda',
+                               fold: int = 0) -> Tuple[str, str, dict]:
     """UCSD Post-Tx GBM — tumor seg + IDH mutation status (Wild-Type / Mutant)."""
-    return _run_inference("Dataset006_AutoMSC_UCSD_PTGB", image, output_dir, device, fold)
+    return _run_inference("Dataset003_UCSD_PTGB", image, output_dir, device, fold)
 
 
-def infer_dataset007_picai(image: Union[str, Sequence[str]],
+def infer_dataset004_picai(image: Union[str, Sequence[str]],
                            output_dir: str,
                            device: Union[str, torch.device] = 'cuda',
                            fold: int = 0) -> Tuple[str, str, dict]:
-    """PI-CAI — csPCa seg + ISUP grade (6-class)."""
-    return _run_inference("Dataset007_PICAI", image, output_dir, device, fold)
+    """PI-CAI — prostate gland + tumor seg + ISUP grade (6-class)."""
+    return _run_inference("Dataset004_PICAI", image, output_dir, device, fold)
+
+
+def infer_dataset005_luna25(image: Union[str, Sequence[str]],
+                            output_dir: str,
+                            device: Union[str, torch.device] = 'cuda',
+                            fold: int = 0) -> Tuple[str, str, dict]:
+    """LUNA25 — lung nodule seg + malignancy classification (Benign / Malignant)."""
+    return _run_inference("Dataset005_LUNA25", image, output_dir, device, fold)
+
+
+def infer_dataset061_petwb_lung(image: Union[str, Sequence[str]],
+                                output_dir: str,
+                                device: Union[str, torch.device] = 'cuda',
+                                fold: int = 0) -> Tuple[str, str, dict]:
+    """PETWB Lung — lung seg on whole-body PET/CT + lung cancer classification."""
+    return _run_inference("Dataset061_PETWB_Lung", image, output_dir, device, fold)
+
+
+def infer_dataset062_petwb_liver(image: Union[str, Sequence[str]],
+                                 output_dir: str,
+                                 device: Union[str, torch.device] = 'cuda',
+                                 fold: int = 0) -> Tuple[str, str, dict]:
+    """PETWB Liver — liver seg on whole-body PET/CT + liver cancer classification."""
+    return _run_inference("Dataset062_PETWB_Liver", image, output_dir, device, fold)
 
 
 DATASET_DISPATCH = {
-    "Dataset002_BMLMPS_FLAIR": infer_dataset002_bmlmps_flair,
-    "Dataset003_BMLMPS_T1CE": infer_dataset003_bmlmps_t1ce,
-    "Dataset004_BrainMets": infer_dataset004_brainmets,
-    "Dataset005_MU_Glioma_Post": infer_dataset005_mu_glioma_post,
-    "Dataset006_AutoMSC_UCSD_PTGB": infer_dataset006_jsc_ucsd_ptgb,
-    "Dataset007_PICAI": infer_dataset007_picai,
+    "Dataset001_BrainMets": infer_dataset001_brainmets,
+    "Dataset002_MU_Glioma": infer_dataset002_mu_glioma,
+    "Dataset003_UCSD_PTGB": infer_dataset003_ucsd_ptgb,
+    "Dataset004_PICAI": infer_dataset004_picai,
+    "Dataset005_LUNA25": infer_dataset005_luna25,
+    "Dataset061_PETWB_Lung": infer_dataset061_petwb_lung,
+    "Dataset062_PETWB_Liver": infer_dataset062_petwb_liver,
 }
 
 
