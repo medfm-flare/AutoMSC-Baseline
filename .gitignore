@@ -121,3 +121,9 @@ output/
 gradio_output/
 examples/
 baseline_models/
+
+# Docker submission model weights (dropped in before build; not committed)
+model_weights/*
+!model_weights/README.md
+!model_weights/.gitkeep
+*.tar.gz

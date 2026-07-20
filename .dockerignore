@@ -1,0 +1,16 @@
+.git
+.gitignore
+**/__pycache__
+*.py[cod]
+*.egg-info
+.wolf
+.claude
+configs
+output
+gradio_output
+examples
+*.tar.gz
+app_*.py
+segcls_ensemble_infer.py
+generate_cls_data.py
+eval_metrics.py
