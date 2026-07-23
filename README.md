@@ -40,6 +40,16 @@ After downloading, place each sub-dataset folder under `nnUNet_raw/` following t
 
 ---
 
+### 0b. Download Model Weights (Optional)
+
+Pre-trained validation baseline model weights are available on HuggingFace:
+
+**Weights:** [https://huggingface.co/FLARE-MedFM/FLARE-AutoMSC-Val-Baseline](https://huggingface.co/FLARE-MedFM/FLARE-AutoMSC-Val-Baseline/tree/main)
+
+Use these if you want to run inference without training from scratch.
+
+---
+
 ### 1. Prepare Data
 
 ## Preprocessing with nnUNet
